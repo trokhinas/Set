@@ -10,15 +10,34 @@ import Foundation
 
 struct SetCard {
     
-    let number : Number
-    let color : Color
-    let symbol : Symbol
-    let shading : Shading
+    let number : Type
+    let color : Type
+    let symbol : Type
+    let fill: Type
     
-    init(num : Number, col : Color, sym : Symbol, shading : Shading) {
+    private var identifier: Int
+    static var identifierFactory = 0
+    
+    init(num : Type, col : Type, sym : Type, fill : Type) {
         number = num
         color = col
         symbol = sym
-        self.shading = shading
+        self.fill = fill
+        self.identifier = SetCard.getUniqueIdentifier()
+    }
+    
+    static func getUniqueIdentifier() -> Int {
+        identifierFactory += 1
+        return identifierFactory
     }
 }
+
+extension SetCard : Hashable {
+    
+    var hashValue: Int { return identifier }
+    
+    static func  ==(lhs: SetCard, rhs: SetCard) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+}
+
