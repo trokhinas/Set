@@ -8,7 +8,11 @@
 
 import Foundation
 
-struct SetCard {
+struct SetCard: CustomStringConvertible {
+    var description: String {
+        return "number: \(number), color: \(color), symbol: \(symbol), fill: \(fill)"
+    }
+    
     
     let number : Type
     let color : Type
@@ -16,7 +20,7 @@ struct SetCard {
     let fill: Type
     
     private var identifier: Int
-    static var identifierFactory = 0
+    private static var identifierFactory = 0
     
     init(num : Type, col : Type, sym : Type, fill : Type) {
         number = num
@@ -26,7 +30,7 @@ struct SetCard {
         self.identifier = SetCard.getUniqueIdentifier()
     }
     
-    static func getUniqueIdentifier() -> Int {
+    private static func getUniqueIdentifier() -> Int {
         identifierFactory += 1
         return identifierFactory
     }

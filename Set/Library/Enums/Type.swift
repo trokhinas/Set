@@ -12,10 +12,7 @@ enum Type : Int{
     
     case v1 = 1, v2, v3
     
-    static func getAll() -> [Type] {
+    static var all: [Type] {
         return [.v1, .v2, .v3]
-    }
-    func index(type : Type) -> Int {
-        return type.rawValue
     }
 }
