@@ -15,4 +15,7 @@ enum Type : Int{
     static var all: [Type] {
         return [.v1, .v2, .v3]
     }
+    func index() -> Int {
+        return self.rawValue - 1
+    }
 }

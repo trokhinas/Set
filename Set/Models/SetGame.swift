@@ -11,9 +11,28 @@ import Foundation
 
 class SetGame  {
     var deckOfCards = SetCardDeck()
+    var deckIsEmpty: Bool {return deckOfCards.cards.isEmpty}
+    var isSet: Bool? {
+        get
+        {
+            guard matchedCards.count == 3 else {return nil}
+            return isSetMatched(cards: matchedCards)
+        }
+        set
+        {
+            if newValue != nil {
+                matchedCards = selectedCards
+                selectedCards.removeAll()
+            } else {
+                matchedCards.removeAll()
+            }
+        }
+    }
+    
     var displayedCards = [SetCard]()
     var selectedCards = [SetCard]()
     var matchedCards = [SetCard]()
+    var removedCards = [SetCard]()
     
     init() {
         print("initial cards: /n")
@@ -24,71 +43,67 @@ class SetGame  {
         }
     }
     
-    
-    public func chooseCard(index: Int) {
-        if(index < displayedCards.count) {
-            print(displayedCards[index])
-            selectCard(index: index)
-        }
-        
-    }
-    public func deal() {
-        removeSetIfExist()
-        print("3 more cards: ")
-        for _ in 0...2 {
-            let cardFromDeck = deckOfCards.draw()
-            displayedCards.append(cardFromDeck!)
-            print(cardFromDeck!)
-        }
-    }
-    public func hint() {
-        for i1 in displayedCards.indices{
-            for i2 in displayedCards.indices {
-                for i3 in displayedCards.indices {
-                    if(i1  != i2 && i2 != i3){
-                        if(isSet(card1: displayedCards[i1],card2: displayedCards[i2],card3: displayedCards[i3])){
-                            print("There is ser with \(i1), \(i2), \(i3) indices")
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    private func selectCard(index: Int) {
-        if(index > displayedCards.count) {return}
+    func chooseCard(at index: Int) {
+        //если индекс карты не попадает в отображаемые, например была кликнута несуществующая карта, которая не была почему-либо задизейблена
+        if(!displayedCards.indices.contains(index)) {return}
         
         let card = displayedCards[index]
-        if(selectedCards.contains(card)){return}
-        
-        if(selectedCards.count == 3) {
-            removeSetIfExist()
-            removeSelected()
-        }
-        selectedCards.append(card)
-    }
-    
-    private func removeSetIfExist() {
-        if(isSet()) {
-            for i in 0...2{
-                print("card: \(selectedCards[i])" )
-                let index = displayedCards.index(of: selectedCards[i])
-                displayedCards.remove(at: index!)
-                selectedCards.remove(at: i)
+        if !removedCards.contains(card), !matchedCards.contains(card) {
+            if isSet != nil {
+                if isSet! { replaceOrRemove() }
+                isSet = nil
+            }
+            if selectedCards.count == 2 , !selectedCards.contains(card) {
+                selectedCards += [card]
+                isSet = isSetMatched(cards: selectedCards)
+            }
+            else {
+                if(!selectedCards.contains(card)) {selectedCards += [card]}
             }
         }
     }
-    private func removeSelected() {
-        selectedCards.removeAll()
+    
+    public func deal() {
+        if let deal = takeThreeCards() {
+            displayedCards += deal
+        }
     }
-    private func isSet() -> Bool{
-        if(selectedCards.count != 3) {
+    private func replaceOrRemove() {
+        if let newCards = takeThreeCards() {
+            for i in 0...2 {
+                let index = displayedCards.index(of: matchedCards[i])
+                displayedCards.remove(at: index!)
+                displayedCards.insert(newCards[i], at: index!)
+            }
+        }
+        else {
+            for i in 0...2 {
+                let index = displayedCards.index(of: matchedCards[i])
+                displayedCards.remove(at: index!)
+            }
+        }
+        removedCards += matchedCards
+        matchedCards.removeAll()
+    }
+    private func takeThreeCards() -> [SetCard]? {
+        var cards = [SetCard]()
+        
+        for _ in 0...2 {
+            if let card = deckOfCards.draw() {
+                cards += [card]
+            }
+            else {return nil}// вообще такого не может произойти но на всякий случай
+        }
+        return cards
+    }
+    private func isSetMatched(cards : [SetCard] ) -> Bool{
+        if(cards.count != 3) {
             return false
         }
         
-        let card1 = selectedCards[0]
-        let card2 = selectedCards[1]
-        let card3 = selectedCards[2]
+        let card1 = cards[0]
+        let card2 = cards[1]
+        let card3 = cards[2]
         
         //ОТВРАТИТЕЛЬНО!
         if (isSetParam(param1: card1.fill, param2: card2.fill, param3: card3.fill)) {
@@ -102,20 +117,6 @@ class SetGame  {
         }
         return false
         
-    }
-    private func isSet(card1: SetCard, card2: SetCard, card3: SetCard) -> Bool{
-        
-        //ОТВРАТИТЕЛЬНО!
-        if (isSetParam(param1: card1.fill, param2: card2.fill, param3: card3.fill)) {
-            if (isSetParam(param1: card1.color, param2: card2.color, param3: card3.color)) {
-                if (isSetParam(param1: card1.number, param2: card2.number, param3: card3.number)) {
-                    if (isSetParam(param1: card1.symbol, param2: card2.symbol, param3: card3.symbol)) {
-                        return true
-                    }
-                }
-            }
-        }
-        return false
     }
     
     private func isSetParam(param1: Type, param2: Type, param3: Type) -> Bool {
@@ -123,5 +124,7 @@ class SetGame  {
         else if(param1 != param2 && param1 != param3 && param3 != param2){return true}
         return false
     }
+    
+    
     
 }

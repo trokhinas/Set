@@ -13,29 +13,27 @@ class ViewController: UIViewController {
     private var cardColor: UIColor = #colorLiteral(red: 0.714486698, green: 0.7708367465, blue: 0.7669996681, alpha: 1)
     private var bgColor: UIColor = #colorLiteral(red: 0.9058823529, green: 0.8650250873, blue: 0.8585260985, alpha: 1)
 
-    @IBAction func deal3CardsButton(_ sender: UIButton) {
-        if(model.displayedCards.count < 24){
-            model.deal()
-            updateViewFromModel()
-        }
+    @IBAction func deal3CardsButton(_ sender: SetButton) {
+
+        updateViewFromModel()
         
     }
-    @IBAction func NewGameButton(_ sender: UIButton) {
+    @IBAction func NewGameButton(_ sender: SetButton) {
         model = SetGame()
         updateViewFromModel()
     }
-    @IBAction func HintButton(_ sender: UIButton) {
-        model.hint()
+    @IBAction func HintButton(_ sender: SetButton) {
         updateViewFromModel()
     }
     
     
+    @IBOutlet weak var dealButton: SetButton!
     @IBOutlet weak var ScoreLabel: UILabel!
-    @IBOutlet var Cards: [UIButton]!
+    @IBOutlet var Cards: [SetButton]!
     
-    @IBAction func touchCard(_ sender: UIButton) {
+    @IBAction func touchCard(_ sender: SetButton) {
         if let cardNumber = Cards.index(of: sender) {
-            model.chooseCard(index: cardNumber)
+            model.chooseCard(at: cardNumber)
             updateViewFromModel()
 
         } else {
@@ -56,25 +54,29 @@ class ViewController: UIViewController {
     
     private func updateViewFromModel(){
         for i in Cards.indices {
-            if(i < model.displayedCards.count) {
-                draw(card: i)
-            }
-            else {clearCard(index: i)}
+            draw(index: i)
         }
-    }
-    private func draw(card at: Int) {
-        let card = Cards[at]
-        let setCard = model.displayedCards[at]
-        let words = "color:\(setCard.color)\n fill:\(setCard.fill)\n number:\(setCard.number)\n symbol:\(setCard.symbol)\n"
+        updateDealButton()
         
-        card.setTitle(words, for: UIControlState.normal)
-        card.backgroundColor = cardColor
-        if(model.selectedCards.contains(setCard)){
-            selectCard(index: at)
+        
+    }
+    private func updateDealButton() {
+        
+    }
+    private func draw(index: Int) {
+        let button = Cards[index]
+        //проверяем отображается ли эта карта
+        if(index < model.displayedCards.count) {
+            var currentCard = model.displayedCards[index]
+            button.card = currentCard
+            if(model.selectedCards.contains(currentCard)) {
+                selectCard(index: index)
+            }
+            else {
+                deselectCard(index: index)
+            }
         }
-        else {
-            deselectCard(index: at)
-        }
+        else {button.card = nil}
     }
     private func selectCard(index: Int) {
         let button = Cards[index]
@@ -88,14 +90,8 @@ class ViewController: UIViewController {
         button.layer.borderWidth = 0.0
         button.layer.borderColor = UIColor.blue.cgColor
     }
-    private func clearCard(index: Int) {
-        let card = Cards[index]
-        
-        card.backgroundColor = UIColor.clear
-        card.setTitle("", for: UIControlState.normal)
-        deselectCard(index: index)
-    }
-
+   
+    
 
 }
 
