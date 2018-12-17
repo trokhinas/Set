@@ -10,13 +10,29 @@ import Foundation
 
 
 class SetGame  {
+    //-----SCORE CONSTANTS-----//
+    let selectPentalty: Int = -5
+    let setConfirmedBonus: Int = 30
+    let hintPenalty: Int = -15
+    var Score: Int
+    
+    //-----WIN CONDITION-----//
+    var isWin: Bool {
+        get {
+            return deckIsEmpty && hint().count == 0
+        }
+    }
+    
+    //-----DECK STRUCTURE-----//
     var deckOfCards = SetCardDeck()
     var deckIsEmpty: Bool {return deckOfCards.cards.isEmpty}
+    
+    //-----SET CALCULATING OPTIONAL-----//
     var isSet: Bool? {
         get
         {
             guard matchedCards.count == 3 else {return nil}
-            return isSetMatched(cards: matchedCards)
+            return CheckSet(cards: matchedCards)
         }
         set
         {
@@ -29,6 +45,7 @@ class SetGame  {
         }
     }
     
+    //-----CARDS ARRAYS-----//
     var displayedCards = [SetCard]()
     var selectedCards = [SetCard]()
     var matchedCards = [SetCard]()
@@ -41,6 +58,7 @@ class SetGame  {
             displayedCards.append(cardFromDeck!)
             print(cardFromDeck!)
         }
+        Score = 0
     }
     
     func chooseCard(at index: Int) {
@@ -48,28 +66,66 @@ class SetGame  {
         if(!displayedCards.indices.contains(index)) {return}
         
         let card = displayedCards[index]
-        if !removedCards.contains(card), !matchedCards.contains(card) {
+        if !removedCards.contains(card) {
             if isSet != nil {
-                if isSet! { replaceOrRemove() }
+                if isSet! { replaceOrRemove(); Score += setConfirmedBonus}
                 isSet = nil
             }
             if selectedCards.count == 2 , !selectedCards.contains(card) {
                 selectedCards += [card]
-                isSet = isSetMatched(cards: selectedCards)
+                isSet = CheckSet(cards: selectedCards)
+                Score += selectPentalty
             }
-            else {
-                if(!selectedCards.contains(card)) {selectedCards += [card]}
+            else if displayedCards.contains(card){
+                //если карты нет - добавляем ее
+                if(!selectedCards.contains(card)) {selectedCards += [card]; Score += selectPentalty}
+                    //если есть - убираем
+                else {selectedCards.remove(at: selectedCards.index(of: card)!)}
             }
         }
     }
     
     public func deal() {
-        if let deal = takeThreeCards() {
-            displayedCards += deal
+        //если сет есть, то метод replaceOrRemove сам
+        //возьмет 3 карты из колоды если это возможно
+            if isSet != nil {
+                if isSet! { replaceOrRemove(); Score += setConfirmedBonus}
+                isSet = nil
+            }
+        //если сета нет, то требуется просто добавить 3 карты на стол, если это возможно
+            else {
+                if let deal = takeThreeCards() {
+                    displayedCards += deal
+                }
+            }
+            
+        
+    }
+    public func hint() -> [SetCard] {
+        var hints = [SetCard]()
+        for i in 0..<displayedCards.count {
+            for j in (i + 1)..<displayedCards.count{
+                for k in (j + 1)..<displayedCards.count
+                {
+                    let threeCards = [displayedCards[i], displayedCards[j], displayedCards[k]]
+                    if(CheckSet(cards: threeCards)) {
+                        hints.append(displayedCards[i])
+                        hints.append(displayedCards[j])
+                        hints.append(displayedCards[k])
+                    }
+                }
+                
+            }
         }
+        //если подсказок нет, то штрафовать пользователя не за что
+        if(!hints.isEmpty){
+            Score += hintPenalty
+        }
+        return hints
     }
     private func replaceOrRemove() {
         if let newCards = takeThreeCards() {
+            //replace
             for i in 0...2 {
                 let index = displayedCards.index(of: matchedCards[i])
                 displayedCards.remove(at: index!)
@@ -77,6 +133,7 @@ class SetGame  {
             }
         }
         else {
+            //remove
             for i in 0...2 {
                 let index = displayedCards.index(of: matchedCards[i])
                 displayedCards.remove(at: index!)
@@ -96,7 +153,7 @@ class SetGame  {
         }
         return cards
     }
-    private func isSetMatched(cards : [SetCard] ) -> Bool{
+    private func CheckSet(cards : [SetCard] ) -> Bool{
         if(cards.count != 3) {
             return false
         }

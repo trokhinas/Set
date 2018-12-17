@@ -9,7 +9,7 @@
 import Foundation
 
 extension String {
-    func join(n: Int, with separator: String) -> String {
+    func multiplyString(n: Int, with separator: String) -> String {
         if n <= 1  {return self}
         
         var result = [String] ()

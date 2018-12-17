@@ -51,6 +51,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AE1E901521C7AEF800AECD47 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				AEC48F8621BE633600B4A34C /* SetButton.swift */,
+				AE754F802195B1C200B51CD1 /* ViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		AE754F722195B1C200B51CD1 = {
 			isa = PBXGroup;
 			children = (
@@ -70,11 +79,10 @@
 		AE754F7D2195B1C200B51CD1 /* Set */ = {
 			isa = PBXGroup;
 			children = (
+				AE1E901521C7AEF800AECD47 /* Views */,
 				AE754F942195BE3A00B51CD1 /* Library */,
 				AE754F912195B57E00B51CD1 /* Models */,
 				AE754F902195B25100B51CD1 /* Supporting Files */,
-				AE754F802195B1C200B51CD1 /* ViewController.swift */,
-				AEC48F8621BE633600B4A34C /* SetButton.swift */,
 				AE754F822195B1C200B51CD1 /* Main.storyboard */,
 			);
 			path = Set;

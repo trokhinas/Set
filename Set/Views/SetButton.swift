@@ -17,7 +17,7 @@ class SetButton: UIButton {
     var symbols = ["●", "■", "▲"]
     var strokeWidths:[CGFloat] = [ -8, 8, -8]
     
-    var card: SetCard? {
+    var setCard: SetCard? {
         //отрисовка кнопки при передаче туда SetCard
         didSet{drawButton()}
         
@@ -25,7 +25,7 @@ class SetButton: UIButton {
     
     
     private func drawButton() {
-        if let card = card {
+        if let card = setCard {
             let pictures = drawSymbols(setCard: card)
             setAttributedTitle(pictures, for: UIControlState.normal)
             backgroundColor = defaultColor
@@ -45,7 +45,7 @@ class SetButton: UIButton {
         let symbol = self.symbols[setCard.symbol.index()]
         
         //формируем необходимое нам количество символов (см. Extensions)
-        let attrString = symbol.join(n: setCard.number.rawValue, with: separator)
+        let attrString = symbol.multiplyString(n: setCard.number.rawValue, with: separator)
         
         let attr:[NSAttributedStringKey: Any] = [
             .strokeColor: colors[setCard.color.index()],

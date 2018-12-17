@@ -10,10 +10,10 @@ import Foundation
 
 enum Type : Int{
     
-    case v1 = 1, v2, v3
+    case type1 = 1, type2, type3
     
     static var all: [Type] {
-        return [.v1, .v2, .v3]
+        return [.type1, .type2, .type3]
     }
     func index() -> Int {
         return self.rawValue - 1

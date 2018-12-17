@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Score: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LEg-Pb-oe4">
-                                <rect key="frame" x="16" y="44" width="82" height="27"/>
+                                <rect key="frame" x="16" y="44" width="176" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -267,26 +267,50 @@
                                     </button>
                                 </subviews>
                             </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="HB0-tv-7WD">
+                                <rect key="frame" x="16" y="717.66666666666663" width="343" height="20.333333333333371"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cards in deck: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yAE-m0-C3Q">
+                                        <rect key="frame" x="0.0" y="0.0" width="167.66666666666666" height="20.333333333333332"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOU ARE WINNER" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BCT-D5-BwH">
+                                        <rect key="frame" x="175.66666666666663" y="0.0" width="167.33333333333337" height="20.333333333333332"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.90588235289999997" green="0.86502508730000005" blue="0.85852609849999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="xgd-dr-W2d" firstAttribute="top" secondItem="HB0-tv-7WD" secondAttribute="bottom" constant="10" id="2VH-1s-ewt"/>
                             <constraint firstItem="LEg-Pb-oe4" firstAttribute="leading" secondItem="SXo-1E-FoQ" secondAttribute="leading" constant="16" id="Ccd-2s-gq6"/>
                             <constraint firstItem="LEg-Pb-oe4" firstAttribute="top" secondItem="SXo-1E-FoQ" secondAttribute="top" id="KEk-gi-fjD"/>
                             <constraint firstItem="SXo-1E-FoQ" firstAttribute="trailing" secondItem="ODa-BG-Lak" secondAttribute="trailing" constant="16" id="SmJ-1N-Jmc"/>
+                            <constraint firstItem="BCT-D5-BwH" firstAttribute="top" relation="greaterThanOrEqual" secondItem="CXk-bP-sYJ" secondAttribute="bottom" constant="10" id="XJB-oC-Y6N"/>
                             <constraint firstItem="i50-SM-n4b" firstAttribute="leading" secondItem="SXo-1E-FoQ" secondAttribute="leading" constant="16" id="a83-Wo-DUP"/>
-                            <constraint firstItem="SXo-1E-FoQ" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LEg-Pb-oe4" secondAttribute="trailing" constant="277" id="jlb-Un-0p5"/>
+                            <constraint firstItem="SXo-1E-FoQ" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LEg-Pb-oe4" secondAttribute="trailing" constant="94" id="jlb-Un-0p5"/>
                             <constraint firstItem="ODa-BG-Lak" firstAttribute="top" secondItem="LEg-Pb-oe4" secondAttribute="bottom" constant="8" id="kjs-4h-UZu"/>
                             <constraint firstItem="SXo-1E-FoQ" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="ODa-BG-Lak" secondAttribute="bottom" constant="200" id="nJA-7B-Jyo"/>
                             <constraint firstItem="ODa-BG-Lak" firstAttribute="leading" secondItem="SXo-1E-FoQ" secondAttribute="leading" constant="16" id="nlS-5f-MSD"/>
+                            <constraint firstItem="HB0-tv-7WD" firstAttribute="leading" secondItem="SXo-1E-FoQ" secondAttribute="leading" constant="16" id="o0P-ZD-V6M"/>
+                            <constraint firstItem="SXo-1E-FoQ" firstAttribute="trailing" secondItem="HB0-tv-7WD" secondAttribute="trailing" constant="16" id="p4t-V7-hLE"/>
                             <constraint firstItem="SXo-1E-FoQ" firstAttribute="bottom" secondItem="i50-SM-n4b" secondAttribute="bottom" id="p9v-dZ-dQp"/>
                             <constraint firstItem="SXo-1E-FoQ" firstAttribute="trailing" secondItem="i50-SM-n4b" secondAttribute="trailing" constant="16" id="qxs-hM-R99"/>
-                            <constraint firstItem="i50-SM-n4b" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ODa-BG-Lak" secondAttribute="bottom" constant="10" id="sdY-BG-Ml5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="SXo-1E-FoQ"/>
                     </view>
                     <connections>
                         <outlet property="ScoreLabel" destination="LEg-Pb-oe4" id="QrU-Yd-BCu"/>
-                        <outlet property="dealButton" destination="nOp-Av-wt0" id="FNm-Ea-l9z"/>
+                        <outlet property="cardsInDeck" destination="yAE-m0-C3Q" id="Vko-M6-Due"/>
+                        <outlet property="dealButton" destination="nOp-Av-wt0" id="afE-q9-FXe"/>
+                        <outlet property="hintButton" destination="XDA-9X-deU" id="0qE-yK-WuJ"/>
+                        <outlet property="newGameButton" destination="xgd-dr-W2d" id="cBE-rf-zOU"/>
+                        <outlet property="winnerLabel" destination="BCT-D5-BwH" id="eNh-BS-ugm"/>
                         <outletCollection property="Cards" destination="862-zU-tNn" collectionClass="NSMutableArray" id="0vL-5s-hHA"/>
                         <outletCollection property="Cards" destination="Zeg-Qa-9xJ" collectionClass="NSMutableArray" id="YN0-2D-g99"/>
                         <outletCollection property="Cards" destination="ho6-MY-eNg" collectionClass="NSMutableArray" id="zN7-dh-fuG"/>
